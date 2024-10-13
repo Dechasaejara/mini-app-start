@@ -4,6 +4,7 @@ import { fetchTelegramUpdates } from '@/app/actions/getupdate'
 import { TelegramGetUpdate } from '@/lib/db/type'
 import { Bot, Keyboard, webhookCallback } from 'grammy'
 import { useRouter } from 'next/navigation';
+import { text } from 'drizzle-orm/pg-core';
 
 const token = process.env.TELEGRAM_BOT_TOKEN
 
@@ -47,6 +48,10 @@ const sendMessageToChannel = async (chatId: number, message: string) => {
 
 
 bot.on("message:text", handleMessageText);
+bot.on(("channel_post:photo"), async (ctx) => {
+  const data: any = ctx.msg.photo;
+  await ctx.reply(data);
+})
 
 export const POST = webhookCallback(bot, 'std/http')
 
