@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
+import { fetchTelegramUpdates } from '@/app/actions/getupdate'
+import { TelegramGetUpdate } from '@/lib/db/type'
 import { Bot, Keyboard, webhookCallback } from 'grammy'
 
 const token = process.env.TELEGRAM_BOT_TOKEN
@@ -21,16 +23,20 @@ const handleMessageText = async (ctx: any) => {
     return await ctx.reply("Click here to join our main channel:    https://t.me/+5IyRGnhrSvcxNmU0", { reply_markup: keyboard });
   }
   if (message.text === "Post") {
-    await sendMessageToChannel("New message posted ")
+    const data = await fetchTelegramUpdates(token)
+    if (data.ok) {
+
+      await sendMessageToChannel(data.result[0].channel_post.chat.id, data.result[0].channel_post.text)
+    }
     return await ctx.reply(`New message posted `, { reply_markup: keyboard });
   }
   return await ctx.reply(message);
 };
 
 // Function to send a message to the channel
-const sendMessageToChannel = async (message: string) => {
+const sendMessageToChannel = async (chatId: number, message: string) => {
   try {
-    await bot.api.sendMessage(channelId, message);
+    await bot.api.sendMessage(chatId, message);
     console.log('Message sent to channel:', message);
   } catch (error) {
     console.error('Error sending message:', error);
