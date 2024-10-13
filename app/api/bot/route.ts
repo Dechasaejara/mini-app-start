@@ -20,15 +20,10 @@ const handleMessageText = async (ctx: any) => {
   if (message.text === "Join our community") {
     return await ctx.reply("Click here to join our main channel:    https://t.me/+5IyRGnhrSvcxNmU0", { reply_markup: keyboard });
   }
-  if (message.text === "Show Status") {
-  }
   if (message.text === "Add") {
     return await ctx.reply(`Please enter amount `, { reply_markup: keyboard });
   }
-  if (Number(message.text)) {
-    // await db.insert(Users).values({}).returning();
-    // await ctx.reply(messageText);
-  }
+  return   await ctx.reply(message);
 };
 
 
