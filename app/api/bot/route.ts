@@ -25,10 +25,9 @@ const handleMessageText = async (ctx: any) => {
   if (message.text === "Post") {
     const data = await fetchTelegramUpdates(token)
     if (data.ok) {
-
-      await sendMessageToChannel(data.result[0].channel_post.chat.id, data.result[0].channel_post.text)
+      // await sendMessageToChannel(data.result[0].channel_post.chat.id, data.result[0].channel_post.text)
+      return await ctx.reply(`New message posted ${JSON.stringify(data)}`, { reply_markup: keyboard });
     }
-    return await ctx.reply(`New message posted `, { reply_markup: keyboard });
   }
   return await ctx.reply(message);
 };
