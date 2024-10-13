@@ -8,6 +8,11 @@ if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.'
 
 const keyboard = new Keyboard().text('Show Status').text('Add').row().text('Join our community')
 const bot = new Bot(token)
+bot.command("start", async (ctx) => {
+  const user = ctx.message?.from.username; // the message object
+  await ctx.reply(`<b>Hello <i>${user}</i> , welcome to our bot.</b>`, { reply_markup: keyboard, parse_mode: "HTML" });
+});
+
 const handleMessageText = async (ctx: any) => {
   const message = ctx.message;
   if (!message) return;
