@@ -1,16 +1,33 @@
 export const dynamic = 'force-dynamic'
-
 export const fetchCache = 'force-no-store'
-
-import { Bot, webhookCallback } from 'grammy'
+import { Bot, Keyboard, webhookCallback } from 'grammy'
 
 const token = process.env.TELEGRAM_BOT_TOKEN
 
 if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.')
 
+const keyboard = new Keyboard().text('Show Status').text('Add').row().text('Join our community')
 const bot = new Bot(token)
-bot.on('message:text', async (ctx) => {
-  await ctx.reply(ctx.message.text)
-})
+const handleMessageText = async (ctx: any) => {
+  const message = ctx.message;
+  if (!message) return;
+
+  if (message.text === "Join our community") {
+    return await ctx.reply("Click here to join our main channel:    https://t.me/+5IyRGnhrSvcxNmU0", { reply_markup: keyboard });
+  }
+  if (message.text === "Show Status") {
+  }
+  if (message.text === "Add") {
+    return await ctx.reply(`Please enter amount `, { reply_markup: keyboard });
+  }
+  if (Number(message.text)) {
+    // await db.insert(Users).values({}).returning();
+    // await ctx.reply(messageText);
+  }
+};
+
+
+bot.on("message:text", handleMessageText);
 
 export const POST = webhookCallback(bot, 'std/http')
+
